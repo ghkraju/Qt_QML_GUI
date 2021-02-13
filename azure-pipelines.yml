@@ -13,6 +13,7 @@ steps:
     echo Hello, Azure agent is now building from pipeline!
     pwd
     ls -l
+    cd Crypto_QML_GUI
     mkdir build
     cd build
     pwd
