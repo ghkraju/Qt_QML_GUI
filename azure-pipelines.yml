@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: Hemanths-MacBook-Pro
+pool: default
 
 steps:
 - script: echo Hello, world!
