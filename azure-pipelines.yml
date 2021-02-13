@@ -31,6 +31,13 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Build Process...!'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Build.Repository.LocalPath'
+    Contents: '*.app'
+    TargetFolder: 'Build.ArtifactStagingDirectory'
+    CleanTargetFolder: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
