@@ -34,7 +34,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'Crypto_QML_GUI/build'
-    Contents: '*.app'
+    Contents: '*.*'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
     CleanTargetFolder: true
 
