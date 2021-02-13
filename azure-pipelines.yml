@@ -33,9 +33,9 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'Build.Repository.LocalPath'
+    SourceFolder: 'build'
     Contents: '*.app'
-    TargetFolder: 'Build.ArtifactStagingDirectory'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
     CleanTargetFolder: true
 
 - task: PublishBuildArtifacts@1
