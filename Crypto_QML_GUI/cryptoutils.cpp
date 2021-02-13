@@ -93,7 +93,8 @@ QString CryptoUtils::encryptMessage(QString msg){
  * @return return QString of decrypted message
  */
 QString CryptoUtils::decryptMessage(QString hexMsg){
-    u8 message[((hexMsg.length())/2)] = {0};
+    u8 message[((hexMsg.length())/2)];
+    memset( message, 0, ((hexMsg.length())/2)*sizeof(u8) );
     hexstrToChar(hexMsg.toStdString(), message);
     int padded_mlength = ((hexMsg.length())/2);
 
