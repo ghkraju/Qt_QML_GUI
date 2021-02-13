@@ -6,6 +6,9 @@
 trigger:
 - main
 
+pool:
+  name: Hemanths-MacBook-Pro
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
