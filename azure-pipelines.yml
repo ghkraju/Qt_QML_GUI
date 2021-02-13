@@ -11,10 +11,17 @@ pool: default
 steps:
 - script: | 
     echo Hello, Azure agent is now building from pipeline!
+    pwd
+    ls -l
     mkdir build
     cd build
+    pwd
+    ls -l
     qmake ../Crypto_QML_GUI.pro
+    pwd
+    ls -l
     make
+    ls -l
   displayName: 'Creating necessary build environment...!'
 
 - script: |
