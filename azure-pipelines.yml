@@ -9,10 +9,15 @@ trigger:
 pool: default
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: | 
+    echo Hello, Azure agent is now building from pipeline!
+    mkdir build
+    cd build
+    qmake ../Crypto_QML_GUI.pro
+    make
+  displayName: 'Creating necessary build environment...!'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  displayName: 'Build Process...!'
