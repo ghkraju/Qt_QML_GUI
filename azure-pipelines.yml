@@ -1,5 +1,4 @@
 # Starter pipeline
-
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -50,5 +49,5 @@ steps:
     publishDirectory: '$(Build.ArtifactStagingDirectory)'
     feedsToUsePublish: 'internal'
     vstsFeedPublish: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
-    vstsFeedPackagePublish: 'Crypto_QML_GUI'
+    vstsFeedPackagePublish: 'crypto_qml_gui'
     versionOption: 'minor'
