@@ -43,3 +43,12 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- task: UniversalPackages@0
+  inputs:
+    command: 'publish'
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    feedsToUsePublish: 'internal'
+    vstsFeedPublish: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
+    vstsFeedPackagePublish: 'Crypto_QML_GUI'
+    versionOption: 'minor'
