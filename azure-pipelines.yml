@@ -11,24 +11,12 @@ pool: default
 steps:
 - script: | 
     echo Hello, Azure agent is now building from pipeline!
-    pwd
-    ls -l
     cd Crypto_QML_GUI
     mkdir build
     cd build
-    pwd
-    ls -l
     qmake ../Crypto_QML_GUI.pro
-    pwd
-    ls -l
     make
-    ls -l
   displayName: 'Creating necessary build environment...!'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Build Process...!'
 
 - task: CopyFiles@2
   inputs:
@@ -36,12 +24,6 @@ steps:
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
     CleanTargetFolder: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
 
 - task: UniversalPackages@0
   inputs:
