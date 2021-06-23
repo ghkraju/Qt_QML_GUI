@@ -24,7 +24,7 @@ steps:
 - task: SquishTask@1
   inputs:
     squishFolder: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite'
-    squishTestSuites: 'suite_QML_GUI'
+    squishTestSuites: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite/suite_QML_GUI'
     squishReportGenStdout: true
 
 - task: CopyFiles@2
