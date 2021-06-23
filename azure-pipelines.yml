@@ -7,9 +7,9 @@ trigger:
 - main
 
 pool:
-  name: default
+  name: ARM
   demands:
-  - agent.os -equals Linux
+  - agent.os -equals Darwin
 
 steps:
 - script: | 
@@ -20,6 +20,12 @@ steps:
     qmake ../Crypto_QML_GUI.pro
     make
   displayName: 'Creating necessary build environment...!'
+
+- task: SquishTask@1
+  inputs:
+    squishFolder: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite'
+    squishTestSuites: 'suite_QML_GUI'
+    squishReportGenStdout: true
 
 - task: CopyFiles@2
   inputs:
