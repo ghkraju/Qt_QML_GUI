@@ -23,7 +23,7 @@ steps:
 
 - task: SquishTask@1
   inputs:
-    squishFolder: '/Applications/Squish for Qt 6.7.1/bin'
+    squishFolder: '/Applications/Squish for Qt 6.7.1'
     squishTestSuites: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite/suite_QML_GUI'
     squishReportGenStdout: true
 
