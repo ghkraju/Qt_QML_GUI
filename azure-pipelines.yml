@@ -28,7 +28,7 @@ steps:
     squishReportGenTestcenter: true
     squishTestcenterURL: 'http://localhost:8800/'
     squishTestcenterProject: 'QML_GUI'
-    squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc''
+    squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc'
 
 - task: CopyFiles@2
   inputs:
