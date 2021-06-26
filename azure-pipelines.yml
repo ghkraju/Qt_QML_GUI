@@ -26,7 +26,7 @@ steps:
     squishFolder: '/Applications/Squish for Qt 6.7.1'
     squishTestSuites: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite/suite_QML_GUI'
     squishReportGenTestcenter: true
-    squishTestcenterURL: 'http://localhost:8800/'
+    squishTestcenterURL: 'http://localhost:8800'
     squishTestcenterProject: 'QML_GUI'
     squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc'
 
