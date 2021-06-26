@@ -30,6 +30,11 @@ steps:
     squishTestcenterProject: 'QML_GUI'
     squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc'
 
+- task: SquishTestcenterTask@1
+  inputs:
+    squishTestcenterURL: 'http://localhost:8800'
+    squishTestcenterProject: 'QML_GUI'
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'Crypto_QML_GUI/build'
