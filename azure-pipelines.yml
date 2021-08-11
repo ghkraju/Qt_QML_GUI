@@ -9,7 +9,7 @@ trigger:
 
 
 pool:
-  vmImage: windows-2019
+  vmImage: vs2017-win2016
 #  name: default
 #  demands:
 #  - agent.os -equals Darwin
