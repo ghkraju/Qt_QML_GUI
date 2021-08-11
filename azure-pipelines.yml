@@ -7,9 +7,9 @@ trigger:
 - main
 
 pool:
-  name: default
-  demands:
-   - agent.os -equals Windows
+  vmImage: windows-latest
+#  name: default
+#  demands:
 #  - agent.os -equals Darwin
 
 steps:
