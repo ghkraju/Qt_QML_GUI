@@ -9,9 +9,23 @@ trigger:
 pool:
   name: default
   demands:
-  - agent.os -equals Darwin
+   - agent.os -equals Windows
+#  - agent.os -equals Darwin
+
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'Azure pay as you go subscription(536e7fb0-2ead-4833-bd2c-c8bcf1fc41a7)'
+    KeyVaultName: 'CIPipelineKeyVault'
+    SecretsFilter: '*'
+    RunAsPreJob: true
 
 steps:
+- script: | 
+    echo Hello, Azure agent is now building from pipeline!
+    wget https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe -O installer.exe
+    .\installer.exe install  qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.qt5.5150.win64_mingw81 qt.tools.ifw.41 qt.tools.win64_mingw810 --root C:\Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email hemanth_kumar.guntamadugu@sandvik.com --pw $(QtCommercial) --confirm-command
+  displayName: 'Install Qt Commercial'
+
 - script: | 
     echo Hello, Azure agent is now building from pipeline!
     cd Crypto_QML_GUI
@@ -21,19 +35,19 @@ steps:
     make
   displayName: 'Creating necessary build environment...!'
 
-- task: SquishTask@1
-  inputs:
-    squishFolder: '/Applications/Squish for Qt 6.7.1'
-    squishTestSuites: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite/suite_QML_GUI'
-    squishReportGenTestcenter: true
-    squishTestcenterURL: 'http://localhost:8800'
-    squishTestcenterProject: 'QML_GUI'
-    squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc'
+#- task: SquishTask@1
+#  inputs:
+#    squishFolder: '/Applications/Squish for Qt 6.7.1'
+#    squishTestSuites: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite/suite_QML_GUI'
+#    squishReportGenTestcenter: true
+#    squishTestcenterURL: 'http://localhost:8800'
+#    squishTestcenterProject: 'QML_GUI'
+#    squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc'
 
-- task: SquishTestcenterTask@1
-  inputs:
-    squishTestcenterURL: 'http://localhost:8800'
-    squishTestcenterProject: 'QML_GUI'
+#- task: SquishTestcenterTask@1
+#  inputs:
+#    squishTestcenterURL: 'http://localhost:8800'
+#    squishTestcenterProject: 'QML_GUI'
 
 - task: CopyFiles@2
   inputs:
@@ -50,3 +64,9 @@ steps:
     vstsFeedPublish: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
     vstsFeedPackagePublish: 'crypto_qml_gui'
     versionOption: 'minor'
+
+- script: | 
+    echo Removing Qt Commercial Installation!
+    cd C:\Qt
+    .\MaintenanceTool.exe purge
+  displayName: 'Remove Qt Commercial'
