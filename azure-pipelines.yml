@@ -1,11 +1,3 @@
-steps:
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Azure pay as you go subscription(536e7fb0-2ead-4833-bd2c-c8bcf1fc41a7)'
-    KeyVaultName: 'CIPipelineKeyVault'
-    SecretsFilter: '*'
-    RunAsPreJob: true
-
 jobs:
 - job: MacOS
   strategy:
@@ -13,7 +5,9 @@ jobs:
       mac:
         imageName: 'macOS-10.14'
   pool:
-    vmImage: $(imageName)
+    name: default
+    demands:
+    - agent.os -equals Darwin
   steps:
     - template: ci/macos.yml
 

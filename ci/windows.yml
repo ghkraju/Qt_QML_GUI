@@ -3,6 +3,14 @@ steps:
   - checkout: self
     submodules: true
 
+
+  - task: AzureKeyVault@2
+    inputs:
+      azureSubscription: 'Azure pay as you go subscription(536e7fb0-2ead-4833-bd2c-c8bcf1fc41a7)'
+      KeyVaultName: 'CIPipelineKeyVault'
+      SecretsFilter: '*'
+      RunAsPreJob: true
+
   - script: | 
       echo Hello, Azure agent is now building from pipeline!
       wget https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe -O installer.exe
