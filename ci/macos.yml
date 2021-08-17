@@ -13,7 +13,7 @@ steps:
   - script: | 
       echo Hello, Azure agent is now building from pipeline!
       curl https://download.qt.io/official_releases/online_installers/qt-unified-mac-x64-online.dmg -o installer
-      .\installer install  qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.qt5.5150.win64_mingw81 qt.tools.ifw.41 qt.tools.win64_mingw810 --root ~/Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email hemanth_kumar.guntamadugu@sandvik.com --pw $(QtCommercial) --confirm-command
+      installer install  qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.qt5.5150.win64_mingw81 qt.tools.ifw.41 qt.tools.win64_mingw810 --root ~/Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email hemanth_kumar.guntamadugu@sandvik.com --pw $(QtCommercial) --confirm-command
     displayName: 'Install Qt Commercial'
 
   - script: | 
