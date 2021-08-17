@@ -23,7 +23,7 @@ steps:
       cd $(Build.SourcesDirectory)/sources
       mkdir build
       cd build
-      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake.exe ../Crypto_QML_GUI.pro
+      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../Crypto_QML_GUI.pro
       make
     displayName: 'Compiling the source code...!'
 
@@ -61,7 +61,7 @@ steps:
   - script: | 
       echo Removing all the installed binaries for the build!
       cd $(Build.BinariesDirectory)\\Qt
-      .\MaintenanceTool.exe purge
+      .\MaintenanceTool purge
       cd $(Build.BinariesDirectory)
       rm -r *
     condition: always()
