@@ -1,19 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
-
-
-
-pool:
-  vmImage: vs2017-win2016
-#  name: default
-#  demands:
-#  - agent.os -equals Darwin
-
 steps:
 - task: AzureKeyVault@2
   inputs:
@@ -22,53 +6,34 @@ steps:
     SecretsFilter: '*'
     RunAsPreJob: true
 
-- script: | 
-    echo Hello, Azure agent is now building from pipeline!
-    wget https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe -O installer.exe
-    .\installer.exe install  qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.qt5.5150.win64_mingw81 qt.tools.ifw.41 qt.tools.win64_mingw810 --root C:\Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email hemanth_kumar.guntamadugu@sandvik.com --pw $(QtCommercial) --confirm-command
-  displayName: 'Install Qt Commercial'
+jobs:
+- job: MacOS
+  strategy:
+    matrix:
+      mac:
+        imageName: 'macOS-10.14'
+  pool:
+    vmImage: $(imageName)
+  steps:
+    - template: ci/macos.yml
 
-- script: | 
-    echo Hello, Azure agent is now building from pipeline!
-    cd Crypto_QML_GUI
-    mkdir build
-    cd build
-    qmake ../Crypto_QML_GUI.pro
-    make
-  displayName: 'Creating necessary build environment...!'
+#- job: Windows
+#  strategy:
+#    matrix:
+#      mac:
+#        imageName: 'vs2017-win2016'
+#  pool:
+#    vmImage: $(imageName)
+#  steps:
+#    - template: ci/windows.yml
 
-#- task: SquishTask@1
-#  inputs:
-#    squishFolder: '/Applications/Squish for Qt 6.7.1'
-#    squishTestSuites: '/Users/ghkraju/Documents/Projects/Qt_QML_GUI/TestSuite/suite_QML_GUI'
-#    squishReportGenTestcenter: true
-#    squishTestcenterURL: 'http://localhost:8800'
-#    squishTestcenterProject: 'QML_GUI'
-#    squishTestcenterToken: 'ccl6SFLAIBC4HMZHPH6eMIdYA9W6dMHh9WYCFRcbpWc'
-
-#- task: SquishTestcenterTask@1
-#  inputs:
-#    squishTestcenterURL: 'http://localhost:8800'
-#    squishTestcenterProject: 'QML_GUI'
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'Crypto_QML_GUI/build'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    CleanTargetFolder: true
-
-- task: UniversalPackages@0
-  inputs:
-    command: 'publish'
-    publishDirectory: '$(Build.ArtifactStagingDirectory)'
-    feedsToUsePublish: 'internal'
-    vstsFeedPublish: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
-    vstsFeedPackagePublish: 'crypto_qml_gui'
-    versionOption: 'minor'
-
-- script: | 
-    echo Removing Qt Commercial Installation!
-    cd C:\Qt
-    .\MaintenanceTool.exe purge
-  displayName: 'Remove Qt Commercial'
+# coming soon
+#- job: Linux
+#  strategy:
+#    matrix:
+#      mac:
+#        imageName: 'vs2017-win2016'
+#  pool:
+#    vmImage: $(imageName)
+#  steps:
+#    - template: ci/linux.yml

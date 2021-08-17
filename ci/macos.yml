@@ -1,0 +1,50 @@
+# macOS-specific:
+#steps:
+#  - checkout: self
+#    # 1
+#    submodules: true
+#  # 2
+#  - script: brew install p7zip 
+#    displayName: 'Install 7-zip'
+#  - script: brew install create-dmg
+#    displayName: 'Install create-dmg'
+#  # 3
+#  - task: UsePythonVersion@0 
+#    inputs:
+#      versionSpec: '3.x'
+#  # 4
+#  - script: | 
+#      /bin/bash -c "sudo xcode-select -s /Applications/Xcode_10.app/Contents/Developer"
+#    displayName: 'Select Xcode 10'
+#  # 5
+#  - script: |
+#      cd $(Build.SourcesDirectory)
+#      python -m pip install aqtinstall
+#    displayName: 'Install aqtinstall'
+#  # 6
+#  - script: | 
+#      python -m aqt install --outputdir $(Build.BinariesDirectory)/Qt 5.14.0 mac desktop -m qtcore qtgui qtxml qtwidgets
+#    displayName: 'Install Qt 5.14.0' 
+#  # 7
+#  - script: | 
+#      cd $(Build.SourcesDirectory)
+#      $(Build.BinariesDirectory)/Qt/5.14.0/clang_64/bin/qmake
+#    displayName: 'Run qmake' 
+#  # 8
+#  - script: |
+#      cd $(Build.SourcesDirectory)
+#      make
+#    displayName: 'Build!'
+#  # 9
+#  - script: $(Build.SourcesDirectory)/create-dmg.sh
+#    displayName: 'Building DMG'
+#  # 10
+#  - task: CopyFiles@2 
+#    inputs:
+#      contents: app.dmg
+#      targetFolder: $(Build.ArtifactStagingDirectory)
+#  # 11
+#  - task: PublishBuildArtifacts@1
+#    inputs:
+#      pathToPublish: $(Build.ArtifactStagingDirectory)
+#      artifactName: MacOS_release
