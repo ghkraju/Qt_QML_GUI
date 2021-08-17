@@ -1,15 +1,15 @@
 jobs:
-- job: MacOS
-  strategy:
-    matrix:
-      mac:
-        imageName: 'macOS-10.14'
-  pool:
-    name: default
-    demands:
-    - agent.os -equals Darwin
-  steps:
-    - template: ci/macos.yml
+#- job: MacOS
+#  strategy:
+#    matrix:
+#      mac:
+#        imageName: 'macOS-10.14'
+#  pool:
+#    name: default
+#    demands:
+#    - agent.os -equals Darwin
+#  steps:
+#    - template: ci/macos.yml
 
 #- job: Windows
 #  strategy:
@@ -21,13 +21,14 @@ jobs:
 #  steps:
 #    - template: ci/windows.yml
 
-# coming soon
-#- job: Linux
-#  strategy:
-#    matrix:
-#      mac:
-#        imageName: 'vs2017-win2016'
-#  pool:
-#    vmImage: $(imageName)
-#  steps:
-#    - template: ci/linux.yml
+- job: Linux
+  strategy:
+    matrix:
+      mac:
+        imageName: 'ubuntu-20.04'
+  pool:
+    name: default
+    demands:
+    - agent.os -equals Linux
+  steps:
+    - template: ci/linux.yml
