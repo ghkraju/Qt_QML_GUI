@@ -15,7 +15,7 @@ steps:
       cd $(Build.BinariesDirectory)
       wget https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
       chmod 755 qt-unified-linux-x64-online.run
-      ./qt-unified-linux-x64-online.run install qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.tools.ifw.41 --root $(Build.BinariesDirectory)/Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email "hemanth_kumar.guntamadugu@sandvik.com" --pw "$(QtPassword)" --confirm-command
+      ./qt-unified-linux-x64-online.run install qt.qt5.5150.gcc_64 qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.tools.ifw.41 --root $(Build.BinariesDirectory)/Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email "hemanth_kumar.guntamadugu@sandvik.com" --pw "$(QtPassword)" --confirm-command
     displayName: 'Install Qt Commercial'
 
   - script: | 
@@ -59,7 +59,10 @@ steps:
       versionOption: 'minor'
 
   - script: | 
-      echo Removing Qt Commercial Installation!
-      cd C:\Qt
+      echo Removing all the installed binaries for the build!
+      cd $(Build.BinariesDirectory)\\Qt
       .\MaintenanceTool.exe purge
-    displayName: 'Remove Qt Commercial'
+      cd $(Build.BinariesDirectory)
+      rm -r *
+    condition: always()
+    displayName: 'Reset Binaries directory'
