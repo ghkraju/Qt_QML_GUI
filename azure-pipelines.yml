@@ -70,6 +70,20 @@ stages:
         artifactName: 'crypto_qml_gui'
         targetPath: '$(Build.ArtifactStagingDirectory)'
 
+# .............................................
+# ...........System/Squish Tests...............
+# .............................................
+  - script: | 
+      echo Hello, Azure agent is now compiling the sources from pipeline!
+      cd $(Build.ArtifactStagingDirectory)/Test
+      ./unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result/target.xml,junitxml
+    displayName: 'Execution of unit-tests...!'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Unit-test Results $(Pipeline.Workspace)/a/unit-tests-result/target.xml'
+    inputs:
+      testResultsFiles: '$(Pipeline.Workspace)/a/unit-tests-result/target.xml'
+
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.ArtifactsDirectory)'

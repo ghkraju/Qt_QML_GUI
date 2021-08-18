@@ -95,8 +95,8 @@ steps:
   - script: | 
       echo Hello, Azure agent is now compiling the sources from pipeline!
       cd $(Build.SourcesDirectory)/sources
-      mkdir build
-      cd build
+      mkdir build-target
+      cd build-target
       ~/rpi/qt5.15/bin/qmake ../Crypto_QML_GUI.pro
       make
     displayName: 'Compiling the source code for target...!'
@@ -104,8 +104,8 @@ steps:
   - script: | 
       echo Hello, Azure agent is now compiling the sources from pipeline!
       cd $(Build.SourcesDirectory)/tests/unit-tests
-      mkdir build
-      cd build
+      mkdir build-target
+      cd build-target
       ~/rpi/qt5.15/bin/qmake ../unit-tests.pro
       make
     displayName: 'Compiling the unit-tests for target...!'
@@ -115,9 +115,16 @@ steps:
 # .............................................
   - task: CopyFiles@2
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)/sources/build
+      SourceFolder: $(Build.SourcesDirectory)/sources/build-target
       Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/App'
+      CleanTargetFolder: true
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(Build.SourcesDirectory)/tests/unit/tests/build-target
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Test'
       CleanTargetFolder: true
 
 # .............................................
