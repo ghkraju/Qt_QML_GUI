@@ -55,15 +55,27 @@ stages:
       - agent.os -equals Linux
       - agent.osarchitecture -equals ARM
     steps:
-    - task: UniversalPackages@0
+# This might be interesting for x64 deployment agents
+#    - task: UniversalPackages@0
+#      inputs:
+#        command: 'download'
+#        downloadDirectory: '$(System.DefaultWorkingDirectory)'
+#        feedsToUse: 'internal'
+#        vstsFeed: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
+#        vstsFeedPackage: '1fb0bb8f-4067-4871-bf71-a8eccc3c4ad6'
+#        vstsPackageVersion: 'latest'
+    - task: DownloadPipelineArtifact@2
       inputs:
-        command: 'download'
-        downloadDirectory: '$(System.DefaultWorkingDirectory)'
-        feedsToUse: 'internal'
-        vstsFeed: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
-        vstsFeedPackage: '1fb0bb8f-4067-4871-bf71-a8eccc3c4ad6'
-        vstsPackageVersion: 'latest'
+        buildType: 'current'
+        artifactName: 'crypto_qml_gui'
+        targetPath: '$(Pipeline.Workspace)'
     
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(Pipeline.Workspace)'
+        Contents: '**'
+        TargetFolder: '$(System.ArtifactsDirectory)'
+        
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.ArtifactsDirectory)'
