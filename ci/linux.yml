@@ -35,20 +35,20 @@ steps:
       cd $(Build.SourcesDirectory)/sources
       mkdir build
       cd build
-#      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../Crypto_QML_GUI.pro
       ~/Qt/5.15.0/gcc_64/bin/qmake ../Crypto_QML_GUI.pro
       make
     displayName: 'Compiling the source code...!'
+#      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../Crypto_QML_GUI.pro
 
   - script: | 
       echo Hello, Azure agent is now compiling the sources from pipeline!
       cd $(Build.SourcesDirectory)/tests/unit-tests
       mkdir build
       cd build
-#      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../unit-tests.pro
       ~/Qt/5.15.0/gcc_64/bin/qmake ../unit-tests.pro
       make
     displayName: 'Compiling the unit-tests...!'
+#      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../unit-tests.pro
 
 # .............................................
 # .................Unit Tests..................
