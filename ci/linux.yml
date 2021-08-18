@@ -54,7 +54,7 @@ steps:
   - script: | 
       echo Hello, Azure agent is now compiling the sources from pipeline!
       cd $(Build.SourcesDirectory)/tests/unit-tests/build
-      unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result.xml,junitxml
+      ./unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result.xml,junitxml
     displayName: 'Execution of unit-tests...!'
 
   - task: PublishTestResults@2
