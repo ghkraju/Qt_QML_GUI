@@ -55,16 +55,14 @@ stages:
       - agent.os -equals Linux
       - agent.osarchitecture -equals ARM
     steps:
-    - task: DownloadBuildArtifacts@0
+    - task: UniversalPackages@0
       inputs:
-        buildType: 'specific'
-        project: '001b1cf9-b4fd-4d83-970c-19d31748fb39'
-        pipeline: '1'
-        specificBuildWithTriggering: true
-        buildVersionToDownload: 'latest'
-        downloadType: 'single'
-        artifactName: 'crypto_qml_gui'
-        downloadPath: '$(System.ArtifactsDirectory)'
+        command: 'download'
+        downloadDirectory: '$(System.DefaultWorkingDirectory)'
+        feedsToUse: 'internal'
+        vstsFeed: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
+        vstsFeedPackage: '1fb0bb8f-4067-4871-bf71-a8eccc3c4ad6'
+        vstsPackageVersion: 'latest'
     
     - task: CopyFiles@2
       inputs:
