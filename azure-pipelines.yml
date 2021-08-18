@@ -74,4 +74,5 @@ stages:
       inputs:
         SourceFolder: '$(System.ArtifactsDirectory)'
         Contents: '**'
-        TargetFolder: '/home/pi'
+        TargetFolder: '~/App'
+        cleanTargetFolder: false
