@@ -1,5 +1,5 @@
 stages:
-- stage: Build & Test
+- stage: Build_and_Test
 #  variables:
 #  - template: variables.yml
   jobs:
@@ -44,7 +44,7 @@ stages:
 #  variables:
 #  - template: variables.yml
   jobs:
-  - job: Deployment of application to RPi
+  - job: Deployment_RPi
     strategy:
       matrix:
         mac:
