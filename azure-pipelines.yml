@@ -1,34 +1,73 @@
-jobs:
-#- job: MacOS
-#  strategy:
-#    matrix:
-#      mac:
-#        imageName: 'macOS-10.14'
-#  pool:
-#    name: default
-#    demands:
-#    - agent.os -equals Darwin
-#  steps:
-#    - template: ci/macos.yml
+stages:
+- stage: Build & Test
+#  variables:
+#  - template: variables.yml
+  jobs:
+# - job: MacOS
+#   strategy:
+#     matrix:
+#       mac:
+#         imageName: 'macOS-10.14'
+#   pool:
+#     name: default
+#     demands:
+#     - agent.os -equals Darwin
+#   steps:
+#     - template: ci/macos.yml
 
-#- job: Windows
-#  strategy:
-#    matrix:
-#      mac:
-#        imageName: 'vs2017-win2016'
-#  pool:
-#    vmImage: $(imageName)
-#  steps:
-#    - template: ci/windows.yml
+# - job: Windows
+#   strategy:
+#     matrix:
+#       mac:
+#         imageName: 'vs2017-win2016'
+#   pool:
+#     vmImage: $(imageName)
+#   steps:
+#     - template: ci/windows.yml
 
-- job: Linux
-  strategy:
-    matrix:
-      mac:
-        imageName: 'ubuntu-20.04'
-  pool:
-    name: default
-    demands:
-    - agent.os -equals Linux
-  steps:
-    - template: ci/linux.yml
+  - job: Linux
+    strategy:
+      matrix:
+        mac:
+          imageName: 'ubuntu-20.04'
+    pool:
+      name: default
+      demands:
+      - agent.os -equals Linux
+# TO-DO: Check the usage of this variable in related to the branch on the pipeline is executing
+#   variables:
+#     buildConfiguration: 'Release'
+    steps:
+      - template: ci/linux.yml
+
+- stage: Deployment
+#  variables:
+#  - template: variables.yml
+  jobs:
+  - job: Deployment of application to RPi
+    strategy:
+      matrix:
+        mac:
+          imageName: 'Raspberry-Pi'
+    pool:
+      name: ARM
+      demands:
+      - agent.os -equals Linux
+      - agent.osarchitecture -equals ARM
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'specific'
+        project: '001b1cf9-b4fd-4d83-970c-19d31748fb39'
+        pipeline: '1'
+        specificBuildWithTriggering: true
+        buildVersionToDownload: 'latest'
+        downloadType: 'single'
+        artifactName: 'crypto_qml_gui'
+        downloadPath: '$(System.ArtifactsDirectory)'
+    
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.ArtifactsDirectory)'
+        Contents: '**'
+        TargetFolder: '~/App/'

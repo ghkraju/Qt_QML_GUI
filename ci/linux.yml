@@ -1,8 +1,16 @@
 # Linux-specific:
 steps:
+# .............................................
+# ....Get the sources as well as artifacts.....
+# .............................................
+# Checkout the code needed for the pipeline
   - checkout: self
     submodules: true
 
+# .............................................
+# ...Prepare Command Development Environment...
+# .............................................
+# Get the secrets needed for installing components
   - task: AzureKeyVault@2
     inputs:
       azureSubscription: 'Azure pay as you go subscription(536e7fb0-2ead-4833-bd2c-c8bcf1fc41a7)'
@@ -10,6 +18,7 @@ steps:
       SecretsFilter: '*'
       RunAsPreJob: true
 
+# Install Qt Tools
   - script: | 
       echo Hello, Azure agent is now installing the necessary build tools...!
       cd $(Build.BinariesDirectory)
@@ -18,6 +27,9 @@ steps:
       ./qt-unified-linux-x64-online.run install qt.qt5.5150.gcc_64 qt.qt5.5150.qtcore qt.qt5.5150.qtgui qt.qt5.5150.qtquick qt.qt5.5150.qtqml qt.tools.ifw.41 --root $(Build.BinariesDirectory)/Qt --auto-answer telemetry-question=Yes,AssociateCommonFiletypes=Yes --default-answer --accept-licenses --accept-obligations --file-query --email "hemanth_kumar.guntamadugu@sandvik.com" --pw "$(QtPassword)" --confirm-command
     displayName: 'Install Qt Commercial'
 
+# .............................................
+# ...............Build procedure...............
+# .............................................
   - script: | 
       echo Hello, Azure agent is now compiling the sources from pipeline!
       cd $(Build.SourcesDirectory)/sources
@@ -26,6 +38,39 @@ steps:
       $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../Crypto_QML_GUI.pro
       make
     displayName: 'Compiling the source code...!'
+
+  - script: | 
+      echo Hello, Azure agent is now compiling the sources from pipeline!
+      cd $(Build.SourcesDirectory)/tests/unit-tests
+      mkdir build
+      cd build
+      $(Build.BinariesDirectory)/Qt/5.15.0/gcc_64/bin/qmake ../unit-tests.pro
+      make
+    displayName: 'Compiling the unit-tests...!'
+
+# .............................................
+# .................Unit Tests..................
+# .............................................
+  - script: | 
+      echo Hello, Azure agent is now compiling the sources from pipeline!
+      cd $(Build.SourcesDirectory)/tests/unit-tests/build
+      unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result.xml,junitxml
+    displayName: 'Execution of unit-tests...!'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Unit-test Results $(Pipeline.Workspace)/a/unit-tests-result.xml'
+    inputs:
+      testResultsFiles: '$(Pipeline.Workspace)/a/unit-tests-result.xml'
+
+# .............................................
+# ..............Functional Tests...............
+# .............................................
+#  - script: | 
+#      echo Hello, Azure agent is now compiling the sources from pipeline!
+#      cd $(Build.SourcesDirectory)/tests/qml-tests/build
+#      unit-tests -o $(Pipeline.Workspace)/a/qml-tests-result.xml,junitxml
+#      make
+#    displayName: 'Execution of functional-tests...!'
 
 # Task to run the automated tests this might be migrated to Release Pipeline and here only concentrate on the Units tests
 #- task: SquishTask@1
@@ -42,6 +87,9 @@ steps:
 #    squishTestcenterURL: 'http://localhost:8800'
 #    squishTestcenterProject: 'QML_GUI'
 
+# .............................................
+# .............Copying Artifacts...............
+# .............................................
   - task: CopyFiles@2
     inputs:
       SourceFolder: $(Build.SourcesDirectory)/sources/build
@@ -49,6 +97,15 @@ steps:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       CleanTargetFolder: true
 
+# .............................................
+# ................System Tests.................
+# .............................................
+# Deploy the application to target device and perform some basic tests
+
+# .............................................
+# .................Versioning..................
+# .............................................
+# Versioning using Git Tools
   - task: UniversalPackages@0
     inputs:
       command: 'publish'
@@ -58,6 +115,9 @@ steps:
       vstsFeedPackagePublish: 'crypto_qml_gui'
       versionOption: 'minor'
 
+# .............................................
+# ..................Clean-Up...................
+# .............................................
   - script: | 
       echo Removing all the installed binaries for the build!
       cd $(Build.BinariesDirectory)\\Qt
