@@ -74,5 +74,5 @@ stages:
       inputs:
         SourceFolder: '$(System.ArtifactsDirectory)'
         Contents: '**'
-        TargetFolder: '~/App'
+        TargetFolder: '~/'
         cleanTargetFolder: false
