@@ -120,7 +120,7 @@ steps:
 # Publishing artifacts to the current pipeline so that it can be used by the other stages/jobs
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)'
+      targetPath: '$(Build.ArtifactStagingDirectory)'
       artifact: 'crypto_qml_gui'
       publishLocation: 'pipeline'
 
