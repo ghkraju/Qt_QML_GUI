@@ -76,13 +76,14 @@ stages:
     - script: | 
         echo Hello, Azure agent is now compiling the sources from pipeline!
         cd $(Build.ArtifactStagingDirectory)/Test
-        ./unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result/target.xml,junitxml
+        chmod 755 unit-tests
+        ./unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result-target.xml,junitxml
       displayName: 'Execution of unit-tests...!'
 
     - task: PublishTestResults@2
-      displayName: 'Publish Unit-test Results $(Pipeline.Workspace)/a/unit-tests-result/target.xml'
+      displayName: 'Publish Unit-test Results $(Pipeline.Workspace)/a/unit-tests-result-target.xml'
       inputs:
-        testResultsFiles: '$(Pipeline.Workspace)/a/unit-tests-result/target.xml'
+        testResultsFiles: '$(Pipeline.Workspace)/a/unit-tests-result-target.xml'
 
     - task: CopyFiles@2
       inputs:
