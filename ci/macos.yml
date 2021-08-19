@@ -111,4 +111,3 @@ steps:
 #    inputs:
 #      pathToPublish: $(Build.ArtifactStagingDirectory)
 #      artifactName: MacOS_release
-# Adding some comments for a release
