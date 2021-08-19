@@ -1,12 +1,13 @@
 TEMPLATE = app
 
-QT += qml quick core
+QT += qml quick core \
+    widgets
 CONFIG += c++11
 
 SOURCES += main.cpp \
     randombytes.c \
     tweetnacl.c \
-    cryptoutils.cpp
+    cryptoutils.cpp \
 
 RESOURCES += qml.qrc
 

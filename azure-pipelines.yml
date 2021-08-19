@@ -1,0 +1,93 @@
+stages:
+- stage: Build_and_Test
+#  variables:
+#  - template: variables.yml
+  jobs:
+# - job: MacOS
+#   strategy:
+#     matrix:
+#       mac:
+#         imageName: 'macOS-10.14'
+#   pool:
+#     name: default
+#     demands:
+#     - agent.os -equals Darwin
+#   steps:
+#     - template: ci/macos.yml
+
+# - job: Windows
+#   strategy:
+#     matrix:
+#       mac:
+#         imageName: 'vs2017-win2016'
+#   pool:
+#     vmImage: $(imageName)
+#   steps:
+#     - template: ci/windows.yml
+
+  - job: Linux
+    strategy:
+      matrix:
+        mac:
+          imageName: 'ubuntu-20.04'
+    pool:
+      name: default
+      demands:
+      - agent.os -equals Linux
+# TO-DO: Check the usage of this variable in related to the branch on the pipeline is executing
+#   variables:
+#     buildConfiguration: 'Release'
+    steps:
+      - template: ci/linux.yml
+
+- stage: Deployment
+#  variables:
+#  - template: variables.yml
+  jobs:
+  - job: Deployment_RPi
+    strategy:
+      matrix:
+        mac:
+          imageName: 'Raspberry-Pi'
+    pool:
+      name: ARM
+      demands:
+      - agent.os -equals Linux
+      - agent.osarchitecture -equals ARM
+    steps:
+# This might be interesting for x64 deployment agents
+#    - task: UniversalPackages@0
+#      inputs:
+#        command: 'download'
+#        downloadDirectory: '$(System.DefaultWorkingDirectory)'
+#        feedsToUse: 'internal'
+#        vstsFeed: 'd9e18571-4868-4836-a3ec-5f9dd2594d30'
+#        vstsFeedPackage: '1fb0bb8f-4067-4871-bf71-a8eccc3c4ad6'
+#        vstsPackageVersion: 'latest'
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'crypto_qml_gui'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+
+# .............................................
+# ...........System/Squish Tests...............
+# .............................................
+    - script: | 
+        echo Hello, Azure agent is now compiling the sources from pipeline!
+        cd $(Build.ArtifactStagingDirectory)/Test
+        chmod 755 unit-tests
+        ./unit-tests -o $(Pipeline.Workspace)/a/unit-tests-result-target.xml,junitxml
+      displayName: 'Execution of unit-tests...!'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Unit-test Results $(Pipeline.Workspace)/a/unit-tests-result-target.xml'
+      inputs:
+        testResultsFiles: '$(Pipeline.Workspace)/a/unit-tests-result-target.xml'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.ArtifactsDirectory)'
+        Contents: '**'
+        TargetFolder: '/home/pi/App'
+        cleanTargetFolder: false
